@@ -8,12 +8,12 @@ function Details({ route, navigation }) {
     return (
         <SafeAreaView>
             <ScrollView>
-                <View style={{ margin: 20 }}>
+                <View style={styles.main}>
                     <Image source={{ uri: data.image }} style={styles.image}>
                     </Image>
-                    <Text style={{ ...styles.textDetails, fontWeight: 'bold', fontSize: 18 }}>{data.name}</Text>
-                    <Text style={styles.textDetails}>{data.price + "€"}</Text>
-                    <Text style={{ ...styles.textDetails, fontSize: 16 }}>{data.description}</Text>
+                    <Text style={styles.name}>{data.name}</Text>
+                    <Text style={styles.price}>{data.price + "€"}</Text>
+                    <Text style={styles.desc}>{data.description}</Text>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -21,6 +21,9 @@ function Details({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+    main:{
+        margin: 20
+    },
     container: {
         flex: 1,
         backgroundColor: COLORS.Transperent,
@@ -45,11 +48,22 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginVertical: 20
     },
-    textDetails: {
+    price: {
         color: COLORS.black,
         fontSize: 17,
         alignSelf: 'center'
-    }
+    },
+    
+    name:{
+        fontWeight: 'bold', 
+        fontSize: 18,
+        color: COLORS.black,
+        alignSelf: 'center'
+    },
+    desc:{
+        color: COLORS.black,
+        fontSize: 16
+    },
 
 });
 

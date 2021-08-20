@@ -17,14 +17,41 @@ function Product() {
         return () => subscription?.remove();
     });
 
+    //Function extracted to display in flatlist
+    function RenderItem({ item }) {
+        let floating_price = (item.price / 100).toFixed(Math.max((((item.price / 100) + '').split(".")[1] || "").length, 2));
+        let discount_floating_price = (item.discountPrice / 100).toFixed(Math.max((((item.discountPrice / 100) + '').split(".")[1] || "").length, 2));
+        return (
+            <View>
+                <Image source={{ uri: item.image }} style={{ ...styles.image, width: dimensions }}>
+                </Image>
+                <View style={styles.container}>
+                    <View style={styles.row}>
+                        <Text style={styles.text}>{item.name}</Text>
+                        <View style={styles.middle}>
+                            <Text style={{ ...styles.text, textDecorationLine: item.discount == null ? null : 'line-through' }}>{item.price == 0 ? "Free" : floating_price + "€"}</Text>
+                            {item.discount == null ? null : <Text style={styles.priceText}>{item.discountPrice == 0 ? "Free" : discount_floating_price + "€"}</Text>}
+                        </View>
+                        <Text style={styles.shortDescription}>{item.short_description}</Text>
+                    </View>
+                    <View style={styles.roundedAvatar}>
+                        <Image source={{ uri: item.image }} style={styles.roundedImage}></Image>
+                    </View>
+
+                </View>
+            </View>
+        )
+
+    }
+
     useEffect(() => {
         //Code for calculating discount price 
-        var newData = productsData.map(function (element) {
+        let newData = productsData.map(function (element) {
             if (element.discount != null && element.discount_type == "amount") {
                 element.discountPrice = element.price - element.discount;
             }
             else if (element.discount != null && element.discount_type == "percentage") {
-                var discount = (element.price * element.discount / 100);
+                let discount = (element.price * element.discount / 100);
                 element.discountPrice = element.price - discount;
             }
             else {
@@ -39,25 +66,9 @@ function Product() {
         <SafeAreaView>
             <FlatList
                 data={newProductData}
-                keyExtractor={(item, index) => item.key}
+                keyExtractor={(item, index) => item.id}
                 renderItem={({ item, index }) =>
-                    <View>
-                        <Image source={{ uri: item.image }} style={{ ...styles.image, width: dimensions }}>
-                        </Image>
-                        <View style={styles.container}>
-                            <View style={{ flex: 0.8 }}>
-                                <Text style={styles.text}>{item.name}</Text>
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={{ ...styles.text, textDecorationLine: item.discount == null ? null : 'line-through' }}>{item.price == 0 ? "Free" : (item.price / 100).toFixed(Math.max((((item.price / 100) + '').split(".")[1] || "").length, 2)) + "€"}</Text>
-                                    {item.discount == null ? null : <Text style={{ color: COLORS.white, fontWeight: 'bold', marginHorizontal: 10, fontSize: 17 }}>{item.discountPrice == 0 ? "Free" : (item.discountPrice / 100).toFixed(Math.max((((item.discountPrice / 100) + '').split(".")[1] || "").length, 2)) + "€"}</Text>}
-                                </View>
-                                <Text style={{ color: COLORS.white, fontSize: 15 }}>{item.short_description}</Text>
-                            </View>
-                            <View style={{ flex: 0.2 }}>
-                                <Image source={{ uri: item.image }} style={styles.roundedImage}></Image>
-                            </View>
-                        </View>
-                    </View>
+                    <RenderItem item={item} />
                 }
             />
         </SafeAreaView>
@@ -65,6 +76,7 @@ function Product() {
 }
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         backgroundColor: COLORS.Transperent,
@@ -80,8 +92,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: COLORS.white,
         fontSize: 16
-    }
-    ,
+    },
+    middle:
+    {
+        flexDirection: "row"
+    },
     image: {
         resizeMode: 'stretch',
         borderRadius: 5,
@@ -91,6 +106,22 @@ const styles = StyleSheet.create({
         height: 50,
         width: 50,
         borderRadius: 50, margin: 10
+    },
+    row: {
+        flex: 0.8
+    },
+    shortDescription: {
+        color: COLORS.white, fontSize: 15
+    },
+    roundedAvatar:
+    {
+        flex: 0.2
+    },
+    priceText: {
+        color: COLORS.white,
+        fontWeight: 'bold',
+        marginHorizontal: 10,
+        fontSize: 17
     }
 });
 
