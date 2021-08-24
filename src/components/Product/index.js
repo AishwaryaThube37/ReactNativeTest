@@ -17,7 +17,7 @@ function Product() {
         return () => subscription?.remove();
     });
 
-    //Function extracted to display in flatlist
+    //Function extracted to render items in flatlist
     function RenderItem({ item }) {
         let floating_price = (item.price / 100).toFixed(Math.max((((item.price / 100) + '').split(".")[1] || "").length, 2));
         let discount_floating_price = (item.discountPrice / 100).toFixed(Math.max((((item.discountPrice / 100) + '').split(".")[1] || "").length, 2));
@@ -44,7 +44,8 @@ function Product() {
 
     }
 
-    useEffect(() => {
+    //Function to calculate DiscountPrice
+    function CalculateDiscountPrice() {
         //Code for calculating discount price 
         let newData = productsData.map(function (element) {
             if (element.discount != null && element.discount_type == "amount") {
@@ -60,6 +61,10 @@ function Product() {
             return element;
         })
         setProductData(newData)
+    }
+
+    useEffect(() => {
+        CalculateDiscountPrice()
     }, []);
 
     return (

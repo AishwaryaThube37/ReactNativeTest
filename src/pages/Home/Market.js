@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, Text, Dimensions, StyleSheet, FlatList, View, Image, TouchableOpacity, Animated, TouchableWithoutFeedback } from 'react-native';
 import { COLORS } from '../../colors'
-const productsData = require('../../../assets/products.json');
-const imageWidth = Dimensions.get('window').width;
 import { useIsFocused } from '@react-navigation/native';
 import { CONST } from '../../constants';
+const productsData = require('../../../assets/products.json');
+const imageWidth = Dimensions.get('window').width;
 
 function Market({ navigation }) {
   const isFocused = useIsFocused();
@@ -14,10 +14,9 @@ function Market({ navigation }) {
   const endValue = 1.1;
   const duration = 2000;
 
-
-  useEffect(() => {
-
+  function SetData() {
     //Code for filtering array for each category
+
     let arrayFiltered = []
     let piratedData = productsData.filter((item) => {
       return item.category == "Pirate"
@@ -44,20 +43,26 @@ function Market({ navigation }) {
       })
     }
     setpirateValue(arrayFiltered)
+  }
+
+  useEffect(() => {
+    SetData()
   },
     [isFocused]
   );
 
-  function RenderItem({item}){
+  //Function to render lists
+  function RenderItem({ item }) {
+
     return (
       <TouchableWithoutFeedback onPress={() => {
         item.isAnimated = true
         setSelectedId(item.id)
         setTimeout(function () {
+          item.isAnimated = false
           navigation.navigate('Details', {
             data: item,
-          }) 
-          item.isAnimated = false
+          })
         }, 1000);
       }}>
         {item.isAnimated ?
@@ -87,14 +92,13 @@ function Market({ navigation }) {
     <SafeAreaView>
       <View style={styles.view}>
         <Text style={styles.topText}>{CONST.info1}</Text>
-        <Text style={{...styles.topText,fontWeight:'bold'}}>{CONST.info2}</Text>
+        <Text style={{ ...styles.topText, fontWeight: 'bold' }}>{CONST.info2}</Text>
       </View>
       <FlatList
         style={styles.flatList}
         data={pirateValue}
-        keyExtractor={(item) => item.key}
+        keyExtractor={(item) => item.catname}
         renderItem={({ item }) =>
-
           <View>
             <View style={styles.main} >
               <Text style={styles.title}>{item.catname}</Text>
@@ -103,10 +107,9 @@ function Market({ navigation }) {
                 extraData={selectedId}
                 keyExtractor={(item, index) => item.id}
                 horizontal={true}
-                renderItem={({ item, index }) => 
-                <RenderItem item={item} />
-              }
-                keyExtractor={item => item.id}
+                renderItem={({ item, index }) =>
+                  <RenderItem item={item} />
+                }
               />
             </View>
           </View>
@@ -118,30 +121,31 @@ function Market({ navigation }) {
 
 
 const styles = StyleSheet.create({
-  view:{
-    margin: 10 
+  view: {
+    margin: 10
   },
   main: {
     margin: 5,
     flexDirection: 'column',
     flex: 1,
   },
-  title:{
-    color:COLORS.black,
-    marginHorizontal:15,
-    fontWeight:'bold',
-    fontSize:16
+  title: {
+    color: COLORS.black,
+    marginHorizontal: 15,
+    fontWeight: 'bold',
+    fontSize: 16
   },
-  flatList:{
-    marginBottom: 90 
+  flatList: {
+    marginBottom: 90
   },
   text: {
     fontWeight: 'bold',
     color: COLORS.white
   },
-  topText: { 
-    color: COLORS.black, 
-    fontSize: 17 },
+  topText: {
+    color: COLORS.black,
+    fontSize: 17
+  },
   image: {
     width: imageWidth,
     resizeMode: 'stretch',
@@ -154,7 +158,7 @@ const styles = StyleSheet.create({
     width: imageWidth / 2,
     fontSize: 17,
     alignSelf: 'center',
-    color: COLORS.black 
+    color: COLORS.black
   },
   roundedImage: {
     height: 100,
@@ -171,10 +175,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     flex: 1,
-    borderWidth: 1, 
-    flexDirection: 'column', 
-    margin:10,
-    padding:10
+    borderWidth: 1,
+    flexDirection: 'column',
+    margin: 10,
+    padding: 10
   }
 });
 

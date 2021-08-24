@@ -1,5 +1,5 @@
-import React, {  } from 'react';
-import { SafeAreaView, Text, StyleSheet,View, Image,ScrollView } from 'react-native';
+import React, { } from 'react';
+import { SafeAreaView, Text, StyleSheet, View, Image, ScrollView } from 'react-native';
 import { COLORS } from '../colors'
 
 //This screen consist of code to display the details of selected product
@@ -21,7 +21,7 @@ function Details({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-    main:{
+    main: {
         margin: 20
     },
     container: {
@@ -53,14 +53,14 @@ const styles = StyleSheet.create({
         fontSize: 17,
         alignSelf: 'center'
     },
-    
-    name:{
-        fontWeight: 'bold', 
+
+    name: {
+        fontWeight: 'bold',
         fontSize: 18,
         color: COLORS.black,
         alignSelf: 'center'
     },
-    desc:{
+    desc: {
         color: COLORS.black,
         fontSize: 16
     },
