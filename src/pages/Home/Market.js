@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, Dimensions, StyleSheet, FlatList, View, Image, TouchableOpacity, Animated } from 'react-native';
+import { SafeAreaView, Text, Dimensions, StyleSheet, FlatList, View, Image, TouchableOpacity, Animated, TouchableWithoutFeedback } from 'react-native';
 import { COLORS } from '../../colors'
 const productsData = require('../../../assets/products.json');
 const imageWidth = Dimensions.get('window').width;
@@ -50,14 +50,14 @@ function Market({ navigation }) {
 
   function RenderItem({item}){
     return (
-      <TouchableOpacity onPress={() => {
+      <TouchableWithoutFeedback onPress={() => {
         item.isAnimated = true
         setSelectedId(item.id)
         setTimeout(function () {
           navigation.navigate('Details', {
             data: item,
-          })
-          isAnimated = false  
+          }) 
+          item.isAnimated = false
         }, 1000);
       }}>
         {item.isAnimated ?
@@ -71,7 +71,7 @@ function Market({ navigation }) {
             <Text style={styles.horizontalText}>{item.name}</Text>
           </View>
         }
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     )
   }
 
